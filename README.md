@@ -36,26 +36,51 @@ namespace App;
 
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Cors\CorsPreflightRequestHandler;
+use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
+use Chubbyphp\Cors\Negotiation\MethodNegotiator;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginSame;
+use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
 use Chubbyphp\SlimPsr15\MiddlewareAdapter;
 use Chubbyphp\SlimPsr15\RequestHandlerAdapter;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Slim\App;
-
-/** @var ResponseFactoryInterface $responseFactory */
-$responseFactory = ...;
+use Slim\Http\Response;
 
 $app = new App();
 
 $app->add(new MiddlewareAdapter(new CorsMiddleware(
-    ['https://myproject.com', '~^https://myproject\.'], // allow-origin
-    true // allow-credentials
+    new OriginNegotiator([
+        new AllowOriginSame('https://myproject.com'),
+        new AllowOriginRegex('^https://myproject\.']),
+    ]),
+    true, // allow-credentials
+    ['X-Custom-Response'] // expose-headers
 )));
 
 $app->options('/{path:.*}', new RequestHandlerAdapter(new CorsPreflightRequestHandler(
-    $responseFactory,
-    ['GET', 'POST'], // allow-methods
-    ['Accept', 'Content-Type'], // allow-headers
-    120 // max-age
+    new class() implements ResponseFactoryInterface
+    {
+        /**
+         * @param int    $code
+         * @param string $reasonPhrase
+         *
+         * @return ResponseInterface
+         */
+        public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
+        {
+            $response = new Response($code);
+            if ('' !== $reasonPhrase) {
+                $response = $response->withStatus($code, $reasonPhrase);
+            }
+
+            return $response;
+        }
+    },
+    new MethodNegotiator(['GET', 'POST'],
+    new HeadersNegotiator(['X-Custom-Request']),
+    7200
 )));
 ```
 

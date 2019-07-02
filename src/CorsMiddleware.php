@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Cors;
 
+use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -12,9 +13,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class CorsMiddleware implements MiddlewareInterface
 {
     /**
-     * @var string[]
+     * @var OriginNegotiatorInterface
      */
-    private $allowOrigin;
+    private $originNegotiator;
 
     /**
      * @var bool
@@ -22,13 +23,23 @@ final class CorsMiddleware implements MiddlewareInterface
     private $allowCredentials;
 
     /**
-     * @param string[] $allowOrigin
-     * @param bool     $allowCredentials
+     * @var array
      */
-    public function __construct(array $allowOrigin, bool $allowCredentials = false)
-    {
-        $this->allowOrigin = $allowOrigin;
+    private $exposeHeaders;
+
+    /**
+     * @param OriginNegotiatorInterface $originNegotiator
+     * @param bool                      $allowCredentials
+     * @param array                     $exposeHeaders
+     */
+    public function __construct(
+        OriginNegotiatorInterface $originNegotiator,
+        bool $allowCredentials = false,
+        array $exposeHeaders = []
+    ) {
+        $this->originNegotiator = $originNegotiator;
         $this->allowCredentials = $allowCredentials;
+        $this->exposeHeaders = $exposeHeaders;
     }
 
     /**
@@ -39,35 +50,20 @@ final class CorsMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $handler->handle($request)
-            ->withHeader('Access-Control-Allow-Origin', $this->getAllowOrigin($request))
-            ->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials ? 'true' : 'false')
-        ;
-    }
+        $allowOrigin = $this->originNegotiator->negotiate($request);
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return string
-     */
-    private function getAllowOrigin(ServerRequestInterface $request): string
-    {
-        if ('' === $origin = $request->getHeaderLine('Origin')) {
-            return '';
+        $request = $request->withAttribute('allowOrigin', $allowOrigin);
+
+        $response = $handler->handle($request);
+
+        if (null !== $allowOrigin) {
+            $response = $response
+                ->withHeader('Access-Control-Allow-Origin', $allowOrigin)
+                ->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials ? 'true' : 'false')
+                ->withHeader('Access-Control-Expose-Headers', implode(', ', $this->exposeHeaders))
+            ;
         }
 
-        foreach ($this->allowOrigin as $allowOrigin) {
-            if ('~' === $allowOrigin[0] ?? '') {
-                if (1 === preg_match('!'.substr($allowOrigin, 1).'!', $origin)) {
-                    return $origin;
-                }
-            } else {
-                if ($allowOrigin === $origin) {
-                    return $origin;
-                }
-            }
-        }
-
-        return '';
+        return $response;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Cors;
 
+use Chubbyphp\Cors\Negotiation\HeadersNegotiatorInterface;
+use Chubbyphp\Cors\Negotiation\MethodNegotiatorInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,14 +19,14 @@ final class CorsPreflightRequestHandler implements RequestHandlerInterface
     private $responseFactory;
 
     /**
-     * @var string[]
+     * @var MethodNegotiatorInterface
      */
-    private $allowMethods;
+    private $methodNegotiator;
 
     /**
-     * @var string[]
+     * @var HeadersNegotiatorInterface
      */
-    private $allowHeaders;
+    private $headersNegotiator;
 
     /**
      * @var int
@@ -32,20 +34,20 @@ final class CorsPreflightRequestHandler implements RequestHandlerInterface
     private $maxAge;
 
     /**
-     * @param ResponseFactoryInterface $responseFactory
-     * @param string[]                 $allowMethods
-     * @param string[]                 $allowHeaders
-     * @param int                      $maxAge
+     * @param ResponseFactoryInterface   $responseFactory
+     * @param MethodNegotiatorInterface  $methodNegotiator
+     * @param HeadersNegotiatorInterface $headersNegotiator
+     * @param int                        $maxAge
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        array $allowMethods,
-        array $allowHeaders,
+        MethodNegotiatorInterface $methodNegotiator,
+        HeadersNegotiatorInterface $headersNegotiator,
         int $maxAge = 600
     ) {
         $this->responseFactory = $responseFactory;
-        $this->allowMethods = $allowMethods;
-        $this->allowHeaders = $allowHeaders;
+        $this->methodNegotiator = $methodNegotiator;
+        $this->headersNegotiator = $headersNegotiator;
         $this->maxAge = $maxAge;
     }
 
@@ -56,10 +58,30 @@ final class CorsPreflightRequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->responseFactory->createResponse(204)
-            ->withHeader('Access-Control-Allow-Methods', implode(', ', $this->allowMethods))
-            ->withHeader('Access-Control-Allow-Headers', implode(', ', $this->allowHeaders))
-            ->withHeader('Access-Control-Max-Age', (string) $this->maxAge)
-        ;
+        $response = $this->responseFactory->createResponse(204);
+
+        if (null === $request->getAttribute('allowOrigin')) {
+            return $response;
+        }
+
+        if (!$this->methodNegotiator->negotiate($request)) {
+            return $response;
+        }
+
+        $response = $response->withHeader(
+            'Access-Control-Allow-Methods',
+            implode(', ', $this->methodNegotiator->getAllowedMethods())
+        );
+
+        if (!$this->headersNegotiator->negotiate($request)) {
+            return $response;
+        }
+
+        $response = $response->withHeader(
+            'Access-Control-Allow-Headers',
+            implode(', ', $this->headersNegotiator->getAllowedHeaders())
+        );
+
+        return $response->withHeader('Access-Control-Max-Age', (string) $this->maxAge);
     }
 }
