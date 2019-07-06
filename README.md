@@ -99,27 +99,29 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\App;
 use Slim\Http\Response;
 
+$responseFactory = new class() implements ResponseFactoryInterface
+{
+    /**
+     * @param int    $code
+        * @param string $reasonPhrase
+        *
+        * @return ResponseInterface
+        */
+    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
+    {
+        $response = new Response($code);
+        if ('' !== $reasonPhrase) {
+            $response = $response->withStatus($code, $reasonPhrase);
+        }
+
+        return $response;
+    }
+};
+
 $app = new App();
 
 $app->options('/{path:.*}', new RequestHandlerAdapter(new CorsPreflightRequestHandler(
-    new class() implements ResponseFactoryInterface
-    {
-        /**
-         * @param int    $code
-         * @param string $reasonPhrase
-         *
-         * @return ResponseInterface
-         */
-        public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
-        {
-            $response = new Response($code);
-            if ('' !== $reasonPhrase) {
-                $response = $response->withStatus($code, $reasonPhrase);
-            }
-
-            return $response;
-        }
-    },
+    $responseFactory,
     new MethodNegotiator(['GET', 'POST']), // allow-method
     new HeadersNegotiator(['X-Custom-Request']), // allow-headers
     7200
