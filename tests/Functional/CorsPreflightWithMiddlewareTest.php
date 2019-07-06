@@ -36,8 +36,8 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https:://somehost.com')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Expose-Headers', '')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'true')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Expose-Headers', 'X-Custom')->willReturnSelf(),
         ]);
 
         $originNegotiator = new OriginNegotiator([
@@ -49,7 +49,7 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
             Call::create('handle')->with($request)->willReturn($response),
         ]);
 
-        $middleware = new CorsMiddleware($originNegotiator);
+        $middleware = new CorsMiddleware($originNegotiator, true, ['X-Custom']);
         $middleware->process($request, $requestHandler);
     }
 
@@ -72,7 +72,6 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
             Call::create('withHeader')->with('Access-Control-Max-Age', '600')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https:://somehost.com')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Expose-Headers', '')->willReturnSelf(),
         ]);
 
         /** @var ResponseFactoryInterface|MockObject $responseFactory */

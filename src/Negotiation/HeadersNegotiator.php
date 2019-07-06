@@ -59,6 +59,7 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
 
     /**
      * @param ServerRequestInterface $request
+     *
      * @return string[]
      */
     private function getHeaders(ServerRequestInterface $request): array

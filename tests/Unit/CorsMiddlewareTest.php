@@ -56,7 +56,6 @@ final class CorsMiddlewareTest extends TestCase
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https:://somehost.com')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Expose-Headers', '')->willReturnSelf(),
         ]);
 
         /** @var RequestHandlerInterface|MockObject $requestHandler */
