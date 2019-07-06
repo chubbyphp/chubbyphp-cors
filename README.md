@@ -25,7 +25,7 @@ Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-cors][1].
 
 ## Usage
 
-### Slim
+### chubbyphp-framework
 
 ```php
 <?php
@@ -38,8 +38,59 @@ use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Cors\CorsPreflightRequestHandler;
 use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
 use Chubbyphp\Cors\Negotiation\MethodNegotiator;
-use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
+use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
+use Chubbyphp\Framework\Application;
+use Chubbyphp\Framework\ErrorHandler;
+use Chubbyphp\Framework\ExceptionHandler;
+use Chubbyphp\Framework\Middleware\MiddlewareDispatcher;
+use Chubbyphp\Framework\Router\FastRouteRouter;
+use Chubbyphp\Framework\Router\Route;
+use Zend\Diactoros\ResponseFactory;
+
+$loader = require __DIR__.'/vendor/autoload.php';
+
+set_error_handler([ErrorHandler::class, 'handle']);
+
+$responseFactory = new ResponseFactory();
+
+$route = Route::options('/{path:.*}', 'cors_preflight', new CorsPreflightRequestHandler(
+    $responseFactory,
+    new MethodNegotiator(['GET', 'POST']), // allow-method
+    new HeadersNegotiator(['X-Custom-Request']), // allow-headers
+    7200
+))->middleware(new CorsMiddleware(
+    new OriginNegotiator([
+        new AllowOriginExact('https://myproject.com'),
+        new AllowOriginRegex('^https://myproject\.'),
+    ]), // allow-origin
+    true, // allow-credentials
+    ['X-Custom-Response'] // expose-headers
+));
+
+$app = new Application(
+    new FastRouteRouter([$route]),
+    new MiddlewareDispatcher(),
+    new ExceptionHandler($responseFactory, true)
+);
+```
+
+### slim
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App;
+
+use Chubbyphp\Cors\CorsMiddleware;
+use Chubbyphp\Cors\CorsPreflightRequestHandler;
+use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
+use Chubbyphp\Cors\Negotiation\MethodNegotiator;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
 use Chubbyphp\SlimPsr15\MiddlewareAdapter;
 use Chubbyphp\SlimPsr15\RequestHandlerAdapter;
@@ -49,15 +100,6 @@ use Slim\App;
 use Slim\Http\Response;
 
 $app = new App();
-
-$app->add(new MiddlewareAdapter(new CorsMiddleware(
-    new OriginNegotiator([
-        new AllowOriginExact('https://myproject.com'),
-        new AllowOriginRegex('^https://myproject\.']),
-    ]), // allow-origin
-    true, // allow-credentials
-    ['X-Custom-Response'] // expose-headers
-)));
 
 $app->options('/{path:.*}', new RequestHandlerAdapter(new CorsPreflightRequestHandler(
     new class() implements ResponseFactoryInterface
@@ -78,9 +120,16 @@ $app->options('/{path:.*}', new RequestHandlerAdapter(new CorsPreflightRequestHa
             return $response;
         }
     },
-    new MethodNegotiator(['GET', 'POST'], // allow-method
-    new HeadersNegotiator(['X-Custom-Request']) // allow-headers,
+    new MethodNegotiator(['GET', 'POST']), // allow-method
+    new HeadersNegotiator(['X-Custom-Request']), // allow-headers
     7200
+)))->setName('cors_preflight')->add(new MiddlewareAdapter(new CorsMiddleware(
+    new OriginNegotiator([
+        new AllowOriginExact('https://myproject.com'),
+        new AllowOriginRegex('^https://myproject\.'),
+    ]), // allow-origin
+    true, // allow-credentials
+    ['X-Custom-Response'] // expose-headers
 )));
 ```
 
