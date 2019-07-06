@@ -54,7 +54,7 @@ $app->add(new MiddlewareAdapter(new CorsMiddleware(
     new OriginNegotiator([
         new AllowOriginExact('https://myproject.com'),
         new AllowOriginRegex('^https://myproject\.']),
-    ]),
+    ]), // allow-origin
     true, // allow-credentials
     ['X-Custom-Response'] // expose-headers
 )));
@@ -78,8 +78,8 @@ $app->options('/{path:.*}', new RequestHandlerAdapter(new CorsPreflightRequestHa
             return $response;
         }
     },
-    new MethodNegotiator(['GET', 'POST'],
-    new HeadersNegotiator(['X-Custom-Request']),
+    new MethodNegotiator(['GET', 'POST'], // allow-method
+    new HeadersNegotiator(['X-Custom-Request']) // allow-headers,
     7200
 )));
 ```
