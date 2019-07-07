@@ -49,10 +49,6 @@ use Chubbyphp\Framework\Router\FastRouteRouter;
 use Chubbyphp\Framework\Router\Route;
 use Zend\Diactoros\ResponseFactory;
 
-$loader = require __DIR__.'/vendor/autoload.php';
-
-set_error_handler([ErrorHandler::class, 'handle']);
-
 $responseFactory = new ResponseFactory();
 
 $route = Route::options('/{path:.*}', 'cors_preflight', new CorsPreflightRequestHandler(
