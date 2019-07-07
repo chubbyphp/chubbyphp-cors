@@ -116,19 +116,23 @@ $responseFactory = new class() implements ResponseFactoryInterface
 
 $app = new App();
 
-$app->options('/{path:.*}', new RequestHandlerAdapter(new CorsPreflightRequestHandler(
-    $responseFactory,
-    new MethodNegotiator(['GET', 'POST']), // allow-method
-    new HeadersNegotiator(['X-Custom-Request']), // allow-headers
-    7200
-)))->setName('cors_preflight')->add(new MiddlewareAdapter(new CorsMiddleware(
-    new OriginNegotiator([
-        new AllowOriginExact('https://myproject.com'),
-        new AllowOriginRegex('^https://myproject\.'),
-    ]), // allow-origin
-    true, // allow-credentials
-    ['X-Custom-Response'] // expose-headers
-)));
+$app->options('/{path:.*}', new RequestHandlerAdapter(
+    new CorsPreflightRequestHandler(
+        $responseFactory,
+        new MethodNegotiator(['GET', 'POST']), // allow-method
+        new HeadersNegotiator(['X-Custom-Request']), // allow-headers
+        7200
+    )
+))->add(new MiddlewareAdapter(
+    new CorsMiddleware(
+        new OriginNegotiator([
+            new AllowOriginExact('https://myproject.com'),
+            new AllowOriginRegex('^https://myproject\.'),
+        ]), // allow-origin
+        true, // allow-credentials
+        ['X-Custom-Response'] // expose-headers
+    )
+));
 ```
 
 ## Copyright
