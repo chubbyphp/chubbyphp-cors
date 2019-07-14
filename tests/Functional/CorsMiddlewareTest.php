@@ -19,6 +19,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @coversNothing
+ *
+ * @internal
  */
 final class CorsMiddlewareTest extends TestCase
 {

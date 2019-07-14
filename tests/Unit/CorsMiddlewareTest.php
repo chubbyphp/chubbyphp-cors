@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace Chubbyphp\Tests\Cors\Unit;
 
 use Chubbyphp\Cors\CorsMiddleware;
+use Chubbyphp\Cors\Negotiation\HeadersNegotiatorInterface;
+use Chubbyphp\Cors\Negotiation\MethodNegotiatorInterface;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiatorInterface;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Chubbyphp\Cors\Negotiation\MethodNegotiatorInterface;
-use Chubbyphp\Cors\Negotiation\HeadersNegotiatorInterface;
 
 /**
  * @covers \Chubbyphp\Cors\CorsMiddleware
+ *
+ * @internal
  */
 final class CorsMiddlewareTest extends TestCase
 {

@@ -25,14 +25,6 @@ final class MethodNegotiator implements MethodNegotiatorInterface
     }
 
     /**
-     * @param string $allowMethod
-     */
-    private function addAllowMethod(string $allowMethod): void
-    {
-        $this->allowMethods[] = $allowMethod;
-    }
-
-    /**
      * @param ServerRequestInterface $request
      *
      * @return bool
@@ -58,5 +50,13 @@ final class MethodNegotiator implements MethodNegotiatorInterface
     public function getAllowedMethods(): array
     {
         return $this->allowMethods;
+    }
+
+    /**
+     * @param string $allowMethod
+     */
+    private function addAllowMethod(string $allowMethod): void
+    {
+        $this->allowMethods[] = $allowMethod;
     }
 }

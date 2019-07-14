@@ -25,14 +25,6 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
     }
 
     /**
-     * @param string $allowHeader
-     */
-    private function addAllowHeader(string $allowHeader): void
-    {
-        $this->allowHeaders[] = $allowHeader;
-    }
-
-    /**
      * @param ServerRequestInterface $request
      *
      * @return bool
@@ -58,6 +50,22 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
     }
 
     /**
+     * @return string[]
+     */
+    public function getAllowedHeaders(): array
+    {
+        return $this->allowHeaders;
+    }
+
+    /**
+     * @param string $allowHeader
+     */
+    private function addAllowHeader(string $allowHeader): void
+    {
+        $this->allowHeaders[] = $allowHeader;
+    }
+
+    /**
      * @param ServerRequestInterface $request
      *
      * @return string[]
@@ -70,13 +78,5 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
         }
 
         return $headers;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getAllowedHeaders(): array
-    {
-        return $this->allowHeaders;
     }
 }

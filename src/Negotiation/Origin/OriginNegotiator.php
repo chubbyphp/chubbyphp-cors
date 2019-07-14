@@ -25,14 +25,6 @@ final class OriginNegotiator implements OriginNegotiatorInterface
     }
 
     /**
-     * @param AllowOriginInterface $allowOrigin
-     */
-    private function addAllowOrigin(AllowOriginInterface $allowOrigin): void
-    {
-        $this->allowOrigins[] = $allowOrigin;
-    }
-
-    /**
      * @param ServerRequestInterface $request
      *
      * @return string|null
@@ -50,5 +42,13 @@ final class OriginNegotiator implements OriginNegotiatorInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param AllowOriginInterface $allowOrigin
+     */
+    private function addAllowOrigin(AllowOriginInterface $allowOrigin): void
+    {
+        $this->allowOrigins[] = $allowOrigin;
     }
 }

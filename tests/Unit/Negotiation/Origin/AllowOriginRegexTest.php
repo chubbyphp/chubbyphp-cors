@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex
+ *
+ * @internal
  */
 final class AllowOriginRegexTest extends TestCase
 {

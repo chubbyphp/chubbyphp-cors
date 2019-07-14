@@ -12,6 +12,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \Chubbyphp\Cors\Negotiation\MethodNegotiator
+ *
+ * @internal
  */
 final class MethodNegotiatorTest extends TestCase
 {

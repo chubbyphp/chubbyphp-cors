@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Chubbyphp\Tests\Cors\Unit\Negotiation\Origin;
 
-use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
+use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
 use Chubbyphp\Mock\Call;
 use Chubbyphp\Mock\MockByCallsTrait;
@@ -14,6 +14,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @covers \Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator
+ *
+ * @internal
  */
 final class OriginNegotiatorTest extends TestCase
 {

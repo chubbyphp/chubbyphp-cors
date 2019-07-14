@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact
+ *
+ * @internal
  */
 final class AllowOriginExactTest extends TestCase
 {

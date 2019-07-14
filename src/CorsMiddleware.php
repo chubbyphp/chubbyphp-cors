@@ -157,9 +157,8 @@ final class CorsMiddleware implements MiddlewareInterface
 
         $response = $this->addAllowOrigin($response, $allowOrigin);
         $response = $this->addAllowCredentials($response);
-        $response = $this->addExposeHeaders($response);
 
-        return $response;
+        return $this->addExposeHeaders($response);
     }
 
     /**
