@@ -10,7 +10,7 @@
 
 ## Description
 
-A minimal Cors implementation for PSR 15.
+A minimal CORS middleware for PSR 15.
 
 ## Requirements
 

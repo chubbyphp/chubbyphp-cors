@@ -1,7 +1,7 @@
 {
     "name": "chubbyphp/chubbyphp-cors",
-    "description": "A minimal Cors implementation for PSR 15.",
-    "keywords": ["chubbyphp", "cors", "middleware", "requesthandler", "psr-7", "psr-15"],
+    "description": "A minimal CORS middleware for PSR 15.",
+    "keywords": ["chubbyphp", "slim", "cors", "middleware", "psr-7", "psr-15"],
     "license": "MIT",
     "authors": [
         {
