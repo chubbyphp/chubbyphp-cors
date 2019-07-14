@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Chubbyphp\Tests\Cors\Functional;
 
 use Chubbyphp\Cors\CorsMiddleware;
-use Chubbyphp\Cors\CorsPreflightRequestHandler;
 use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
 use Chubbyphp\Cors\Negotiation\MethodNegotiator;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
@@ -21,27 +20,23 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * @coversNothing
  */
-final class CorsPreflightWithMiddlewareTest extends TestCase
+final class CorsMiddlewareTest extends TestCase
 {
     use MockByCallsTrait;
 
-    public function testSample(): void
+    public function testDefault(): void
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with('Origin')->willReturn('https:://somehost.com'),
-            Call::create('withAttribute')->with('allowOrigin', 'https:://somehost.com')->willReturnSelf(),
+            Call::create('getHeaderLine')->with('Origin')->willReturn('https://somehost.com'),
+            Call::create('getMethod')->with()->willReturn('get'),
         ]);
 
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https:://somehost.com')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://somehost.com')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'true')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Expose-Headers', 'X-Custom')->willReturnSelf(),
-        ]);
-
-        $originNegotiator = new OriginNegotiator([
-            new AllowOriginExact('https:://somehost.com'),
         ]);
 
         /** @var RequestHandlerInterface|MockObject $requestHandler */
@@ -49,7 +44,27 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
             Call::create('handle')->with($request)->willReturn($response),
         ]);
 
-        $middleware = new CorsMiddleware($originNegotiator, true, ['X-Custom']);
+        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+
+        $originNegotiator = new OriginNegotiator([
+            new AllowOriginExact('https://somehost.com'),
+        ]);
+
+        $methodNegotiator = new MethodNegotiator(['GET', 'POST']);
+
+        $headersNegotiator = new HeadersNegotiator(['X-Awe', 'X-Some']);
+
+        $middleware = new CorsMiddleware(
+            $responseFactory,
+            $originNegotiator,
+            $methodNegotiator,
+            $headersNegotiator,
+            ['X-Custom'],
+            true,
+            7200
+        );
+
         $middleware->process($request, $requestHandler);
     }
 
@@ -57,9 +72,8 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
     {
         /** @var ServerRequestInterface|MockObject $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with('Origin')->willReturn('https:://somehost.com'),
-            Call::create('withAttribute')->with('allowOrigin', 'https:://somehost.com')->willReturnSelf(),
-            Call::create('getAttribute')->with('allowOrigin', null)->willReturn('https:://somehost.com'),
+            Call::create('getHeaderLine')->with('Origin')->willReturn('https://somehost.com'),
+            Call::create('getMethod')->with()->willReturn('options'),
             Call::create('getHeaderLine')->with('Access-Control-Request-Method')->willReturn('POST'),
             Call::create('hasHeader')->with('Access-Control-Request-Headers')->willReturn(true),
             Call::create('getHeaderLine')->with('Access-Control-Request-Headers')->willReturn('X-Some'),
@@ -67,12 +81,16 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
 
         /** @var ResponseInterface|MockObject $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
+            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://somehost.com')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'true')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Expose-Headers', 'X-Custom')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Methods', 'GET, POST')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Headers', 'X-Awe, X-Some')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Max-Age', '600')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https:://somehost.com')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
+            Call::create('withHeader')->with('Access-Control-Max-Age', '7200')->willReturnSelf(),
         ]);
+
+        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
 
         /** @var ResponseFactoryInterface|MockObject $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
@@ -80,20 +98,23 @@ final class CorsPreflightWithMiddlewareTest extends TestCase
         ]);
 
         $originNegotiator = new OriginNegotiator([
-            new AllowOriginExact('https:://somehost.com'),
+            new AllowOriginExact('https://somehost.com'),
         ]);
 
         $methodNegotiator = new MethodNegotiator(['GET', 'POST']);
 
         $headersNegotiator = new HeadersNegotiator(['X-Awe', 'X-Some']);
 
-        $requestHandler = new CorsPreflightRequestHandler(
+        $middleware = new CorsMiddleware(
             $responseFactory,
+            $originNegotiator,
             $methodNegotiator,
-            $headersNegotiator
+            $headersNegotiator,
+            ['X-Custom'],
+            true,
+            7200
         );
 
-        $middleware = new CorsMiddleware($originNegotiator);
         $middleware->process($request, $requestHandler);
     }
 }
