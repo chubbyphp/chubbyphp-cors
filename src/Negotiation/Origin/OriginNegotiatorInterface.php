@@ -8,12 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 interface OriginNegotiatorInterface
 {
-    const HEADER = 'Origin';
+    public const HEADER = 'Origin';
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return string|null
-     */
     public function negotiate(ServerRequestInterface $request): ?string;
 }

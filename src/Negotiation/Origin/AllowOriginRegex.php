@@ -11,19 +11,11 @@ final class AllowOriginRegex implements AllowOriginInterface
      */
     private $pattern;
 
-    /**
-     * @param string $pattern
-     */
     public function __construct(string $pattern)
     {
         $this->pattern = $pattern;
     }
 
-    /**
-     * @param string $origin
-     *
-     * @return bool
-     */
     public function match(string $origin): bool
     {
         return 1 === preg_match('!'.$this->pattern.'!', $origin);

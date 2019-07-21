@@ -19,9 +19,10 @@
         "chubbyphp/chubbyphp-mock": "^1.4",
         "friendsofphp/php-cs-fixer": "^2.15.1",
         "infection/infection": "^0.12.2",
+        "nunomaduro/phpinsights": "^1.7",
         "phploc/phploc": "^5.0",
-        "phpstan/phpstan": "^0.11.8",
-        "phpunit/phpunit": "^8.2.3"
+        "phpstan/phpstan": "^0.11.12",
+        "phpunit/phpunit": "^8.2.4"
     },
     "autoload": {
         "psr-4": { "Chubbyphp\\Cors\\": "src/" }

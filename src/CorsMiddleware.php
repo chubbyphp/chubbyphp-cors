@@ -36,7 +36,7 @@ final class CorsMiddleware implements MiddlewareInterface
     private $headersNegotiator;
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $exposeHeaders;
 
@@ -55,7 +55,7 @@ final class CorsMiddleware implements MiddlewareInterface
      * @param OriginNegotiatorInterface  $originNegotiator
      * @param MethodNegotiatorInterface  $methodNegotiator
      * @param HeadersNegotiatorInterface $headersNegotiator
-     * @param string[]                   $exposeHeaders
+     * @param array<string>              $exposeHeaders
      * @param bool                       $allowCredentials
      * @param int                        $maxAge
      */
@@ -77,12 +77,6 @@ final class CorsMiddleware implements MiddlewareInterface
         $this->maxAge = $maxAge;
     }
 
-    /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $allowOrigin = $this->originNegotiator->negotiate($request);
@@ -94,22 +88,11 @@ final class CorsMiddleware implements MiddlewareInterface
         return $this->handle($request, $handler, $allowOrigin);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
-     */
     private function isPreflight(ServerRequestInterface $request): bool
     {
         return 'OPTIONS' === strtoupper($request->getMethod());
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param string|null            $allowOrigin
-     *
-     * @return ResponseInterface
-     */
     private function handlePreflight(ServerRequestInterface $request, ?string $allowOrigin): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(204);
@@ -137,13 +120,6 @@ final class CorsMiddleware implements MiddlewareInterface
         return $this->addMaxAge($response);
     }
 
-    /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     * @param string|null             $allowOrigin
-     *
-     * @return ResponseInterface
-     */
     private function handle(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
@@ -161,32 +137,16 @@ final class CorsMiddleware implements MiddlewareInterface
         return $this->addExposeHeaders($response);
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param string            $allowOrigin
-     *
-     * @return ResponseInterface
-     */
     private function addAllowOrigin(ResponseInterface $response, string $allowOrigin): ResponseInterface
     {
         return $response->withHeader('Access-Control-Allow-Origin', $allowOrigin);
     }
 
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return ResponseInterface
-     */
     private function addAllowCredentials(ResponseInterface $response): ResponseInterface
     {
         return $response->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials ? 'true' : 'false');
     }
 
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return ResponseInterface
-     */
     private function addExposeHeaders(ResponseInterface $response): ResponseInterface
     {
         if ([] === $this->exposeHeaders) {
@@ -196,11 +156,6 @@ final class CorsMiddleware implements MiddlewareInterface
         return $response->withHeader('Access-Control-Expose-Headers', implode(', ', $this->exposeHeaders));
     }
 
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return ResponseInterface
-     */
     private function addAllowMethod(ResponseInterface $response): ResponseInterface
     {
         return $response->withHeader(
@@ -209,11 +164,6 @@ final class CorsMiddleware implements MiddlewareInterface
         );
     }
 
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return ResponseInterface
-     */
     private function addAllowHeaders(ResponseInterface $response): ResponseInterface
     {
         return $response->withHeader(
@@ -222,11 +172,6 @@ final class CorsMiddleware implements MiddlewareInterface
         );
     }
 
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return ResponseInterface
-     */
     private function addMaxAge(ResponseInterface $response): ResponseInterface
     {
         return $response

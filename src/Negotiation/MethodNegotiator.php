@@ -9,12 +9,12 @@ use Psr\Http\Message\ServerRequestInterface;
 final class MethodNegotiator implements MethodNegotiatorInterface
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     private $allowMethods;
 
     /**
-     * @param string[] $allowMethods
+     * @param array<string> $allowMethods
      */
     public function __construct(array $allowMethods)
     {
@@ -24,11 +24,6 @@ final class MethodNegotiator implements MethodNegotiatorInterface
         }
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
-     */
     public function negotiate(ServerRequestInterface $request): bool
     {
         if ('' === $method = $request->getHeaderLine(self::HEADER)) {
@@ -45,16 +40,13 @@ final class MethodNegotiator implements MethodNegotiatorInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getAllowedMethods(): array
     {
         return $this->allowMethods;
     }
 
-    /**
-     * @param string $allowMethod
-     */
     private function addAllowMethod(string $allowMethod): void
     {
         $this->allowMethods[] = $allowMethod;

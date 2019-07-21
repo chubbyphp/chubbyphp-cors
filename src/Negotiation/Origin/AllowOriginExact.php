@@ -11,19 +11,11 @@ final class AllowOriginExact implements AllowOriginInterface
      */
     private $value;
 
-    /**
-     * @param string $value
-     */
     public function __construct(string $value)
     {
         $this->value = $value;
     }
 
-    /**
-     * @param string $origin
-     *
-     * @return bool
-     */
     public function match(string $origin): bool
     {
         return $this->value === $origin;

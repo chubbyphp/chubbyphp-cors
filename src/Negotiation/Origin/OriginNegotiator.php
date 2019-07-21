@@ -9,12 +9,12 @@ use Psr\Http\Message\ServerRequestInterface;
 final class OriginNegotiator implements OriginNegotiatorInterface
 {
     /**
-     * @var AllowOriginInterface[]
+     * @var array<AllowOriginInterface>
      */
     private $allowOrigins;
 
     /**
-     * @param AllowOriginInterface[] $allowOrigins
+     * @param array<AllowOriginInterface> $allowOrigins
      */
     public function __construct(array $allowOrigins)
     {
@@ -24,11 +24,6 @@ final class OriginNegotiator implements OriginNegotiatorInterface
         }
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return string|null
-     */
     public function negotiate(ServerRequestInterface $request): ?string
     {
         if ('' === $origin = $request->getHeaderLine(self::HEADER)) {
@@ -44,9 +39,6 @@ final class OriginNegotiator implements OriginNegotiatorInterface
         return null;
     }
 
-    /**
-     * @param AllowOriginInterface $allowOrigin
-     */
     private function addAllowOrigin(AllowOriginInterface $allowOrigin): void
     {
         $this->allowOrigins[] = $allowOrigin;

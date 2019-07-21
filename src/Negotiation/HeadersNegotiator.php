@@ -9,12 +9,12 @@ use Psr\Http\Message\ServerRequestInterface;
 final class HeadersNegotiator implements HeadersNegotiatorInterface
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     private $allowHeaders;
 
     /**
-     * @param string[] $allowHeaders
+     * @param array<string> $allowHeaders
      */
     public function __construct(array $allowHeaders)
     {
@@ -24,11 +24,6 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
         }
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
-     */
     public function negotiate(ServerRequestInterface $request): bool
     {
         if (!$request->hasHeader(self::HEADER)) {
@@ -50,16 +45,13 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getAllowedHeaders(): array
     {
         return $this->allowHeaders;
     }
 
-    /**
-     * @param string $allowHeader
-     */
     private function addAllowHeader(string $allowHeader): void
     {
         $this->allowHeaders[] = $allowHeader;
@@ -68,7 +60,7 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
     /**
      * @param ServerRequestInterface $request
      *
-     * @return string[]
+     * @return array<string>
      */
     private function getHeaders(ServerRequestInterface $request): array
     {

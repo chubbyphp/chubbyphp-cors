@@ -8,17 +8,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 interface HeadersNegotiatorInterface
 {
-    const HEADER = 'Access-Control-Request-Headers';
+    public const HEADER = 'Access-Control-Request-Headers';
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
-     */
     public function negotiate(ServerRequestInterface $request): bool;
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getAllowedHeaders(): array;
 }
