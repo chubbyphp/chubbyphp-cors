@@ -174,9 +174,6 @@ final class CorsMiddleware implements MiddlewareInterface
 
     private function addMaxAge(ResponseInterface $response): ResponseInterface
     {
-        return $response
-            ->withHeader('Access-Control-Max-Age', (string) $this->maxAge)
-            ->withHeader('Cache-Control', 'public, max-age='.$this->maxAge)
-        ;
+        return $response->withHeader('Access-Control-Max-Age', (string) $this->maxAge);
     }
 }

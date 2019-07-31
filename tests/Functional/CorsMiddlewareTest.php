@@ -89,7 +89,6 @@ final class CorsMiddlewareTest extends TestCase
             Call::create('withHeader')->with('Access-Control-Allow-Methods', 'GET, POST')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Headers', 'X-Awe, X-Some')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Max-Age', '7200')->willReturnSelf(),
-            Call::create('withHeader')->with('Cache-Control', 'public, max-age=7200')->willReturnSelf(),
         ]);
 
         /** @var RequestHandlerInterface|MockObject $requestHandler */
