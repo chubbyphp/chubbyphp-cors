@@ -33,7 +33,7 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
         $headers = $this->getHeaders($request);
         foreach ($headers as $i => $header) {
             foreach ($this->allowHeaders as $allowHeader) {
-                if (mb_strtolower($allowHeader) !== mb_strtolower($header)) {
+                if (strtolower($allowHeader) !== strtolower($header)) {
                     continue;
                 }
 
