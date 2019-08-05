@@ -1,5 +1,9 @@
 # Chubbyphp Framework
 
+## Requirements
+
+ * [chubbyphp/chubbyphp-framework][1]: ^1.1.1
+
 ## Example
 
 ```php
@@ -43,3 +47,5 @@ $app = new Application(
     ]
 );
 ```
+
+[1]: https://packagist.org/packages/chubbyphp/chubbyphp-framework

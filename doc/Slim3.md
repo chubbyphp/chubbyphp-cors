@@ -1,5 +1,10 @@
 # Slim 3
 
+## Requirements
+
+ * [http-interop/http-factory-slim][1]: ^2.0
+ * [slim/slim][2]: ^3.12.1
+
 ## Example
 
 ```php
@@ -16,35 +21,14 @@ use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
 use Chubbyphp\SlimPsr15\MiddlewareAdapter;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
+use Http\Factory\Slim\ResponseFactory;
 use Slim\App;
-use Slim\Http\Response;
-
-$responseFactory = new class() implements ResponseFactoryInterface
-{
-    /**
-     * @param int    $code
-     * @param string $reasonPhrase
-     *
-     * @return ResponseInterface
-     */
-    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
-    {
-        $response = new Response($code);
-        if ('' !== $reasonPhrase) {
-            $response = $response->withStatus($code, $reasonPhrase);
-        }
-
-        return $response;
-    }
-};
 
 $app = new App();
 
 $app->add(new MiddlewareAdapter(
     new CorsMiddleware(
-        $responseFactory,
+        new ResponseFactory(),
         new OriginNegotiator([
             new AllowOriginExact('https://myproject.com'),
             new AllowOriginRegex('^https://myproject\.'),
@@ -57,3 +41,6 @@ $app->add(new MiddlewareAdapter(
     )
 ));
 ```
+
+[1]: https://packagist.org/packages/http-interop/http-factory-slim
+[2]: https://packagist.org/packages/slim/slim

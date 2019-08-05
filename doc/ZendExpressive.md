@@ -1,5 +1,9 @@
 # Zend Expressive
 
+## Requirements
+
+* [zendframework/zend-expressive][1]: ^3.2.1
+
 ## Example
 
 ```php
@@ -33,3 +37,5 @@ $app->pipe(new CorsMiddleware(
     7200 // max age
 ));
 ```
+
+[1]: https://packagist.org/packages/zendframework/zend-expressive

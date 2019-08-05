@@ -1,5 +1,9 @@
 # Slim 4
 
+## Requirements
+
+ * [slim/slim][2]: ^4.0
+
 ## Example
 
 ```php
@@ -33,3 +37,5 @@ $app->add(new CorsMiddleware(
     7200 // max age
 ));
 ```
+
+[2]: https://packagist.org/packages/slim/slim
