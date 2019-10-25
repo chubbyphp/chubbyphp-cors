@@ -1,8 +1,7 @@
 # chubbyphp-cors
 
 [![Build Status](https://api.travis-ci.org/chubbyphp/chubbyphp-cors.png?branch=master)](https://travis-ci.org/chubbyphp/chubbyphp-cors)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/chubbyphp/chubbyphp-cors/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chubbyphp/chubbyphp-cors/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/chubbyphp/chubbyphp-cors/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/chubbyphp/chubbyphp-cors/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-cors/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-cors?branch=master)
 [![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
@@ -22,6 +21,10 @@ A minimal CORS middleware for PSR 15.
 ## Installation
 
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-cors][1].
+
+```sh
+composer require chubbyphp/chubbyphp-cors "^1.1"
+```
 
 ## Usage
 
