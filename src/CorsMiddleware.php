@@ -51,13 +51,7 @@ final class CorsMiddleware implements MiddlewareInterface
     private $maxAge;
 
     /**
-     * @param ResponseFactoryInterface   $responseFactory
-     * @param OriginNegotiatorInterface  $originNegotiator
-     * @param MethodNegotiatorInterface  $methodNegotiator
-     * @param HeadersNegotiatorInterface $headersNegotiator
-     * @param array<string>              $exposeHeaders
-     * @param bool                       $allowCredentials
-     * @param int                        $maxAge
+     * @param array<string> $exposeHeaders
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
