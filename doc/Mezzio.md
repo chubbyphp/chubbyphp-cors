@@ -1,8 +1,8 @@
-# Zend Expressive
+# Mezzio
 
 ## Requirements
 
-* [zendframework/zend-expressive][1]: ^3.2.1
+* [mezzio/mezzio][1]: ^3.2.1
 
 ## Example
 
@@ -19,8 +19,8 @@ use Chubbyphp\Cors\Negotiation\MethodNegotiator;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
-use Zend\Diactoros\ResponseFactory;
-use Zend\Expressive\Application;
+use Laminas\Diactoros\ResponseFactory;
+use Mezzio\Expressive\Application;
 
 $app = new Application();
 
@@ -38,4 +38,4 @@ $app->pipe(new CorsMiddleware(
 ));
 ```
 
-[1]: https://packagist.org/packages/zendframework/zend-expressive
+[1]: https://packagist.org/packages/mezzio/mezzio

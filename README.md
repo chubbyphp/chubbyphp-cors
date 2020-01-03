@@ -29,9 +29,10 @@ composer require chubbyphp/chubbyphp-cors "^1.1"
 ## Usage
 
 * [Chubbyphp Framework][10]
-* [Slim 3][11]
-* [Slim 4][12]
-* [Zend Expressive][13]
+* [Mezzio][11]
+* [Slim 3][12]
+* [Slim 4][13]
+
 
 ## Copyright
 
@@ -44,6 +45,6 @@ Dominik Zogg 2019
 [4]: https://packagist.org/packages/psr/http-server-middleware
 
 [10]: doc/ChubbyphpFramework.md
-[11]: doc/Slim3.md
-[12]: doc/Slim4.md
-[13]: doc/ZendExpressive.md
+[11]: doc/Mezzio.md
+[12]: doc/Slim3.md
+[13]: doc/Slim4.md
