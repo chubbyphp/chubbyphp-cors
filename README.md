@@ -36,7 +36,7 @@ composer require chubbyphp/chubbyphp-cors "^1.1"
 
 ## Copyright
 
-Dominik Zogg 2019
+Dominik Zogg 2020
 
 [1]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
 
