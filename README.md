@@ -2,10 +2,10 @@
 
 [![Build Status](https://api.travis-ci.org/chubbyphp/chubbyphp-cors.png?branch=master)](https://travis-ci.org/chubbyphp/chubbyphp-cors)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-cors/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-cors?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
-[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
-[![Latest Unstable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v/unstable)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
+[![Daily Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/d/daily)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 
 ## Description
 
