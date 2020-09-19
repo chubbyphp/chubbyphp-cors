@@ -23,7 +23,7 @@ A minimal CORS middleware for PSR 15.
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-cors][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-cors "^1.1"
+composer require chubbyphp/chubbyphp-cors "^1.2"
 ```
 
 ## Usage
