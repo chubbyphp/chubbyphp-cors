@@ -21,7 +21,6 @@
         "chubbyphp/chubbyphp-laminas-config": "^1.0",
         "chubbyphp/chubbyphp-mock": "^1.4.2",
         "infection/infection": "^0.15",
-        "mavimo/phpstan-junit": "^0.3",
         "php-coveralls/php-coveralls": "^2.2",
         "phploc/phploc": "^5.0",
         "phpstan/extension-installer": "^1.0.3",
