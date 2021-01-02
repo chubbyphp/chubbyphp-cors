@@ -15,40 +15,22 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class CorsMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private \Psr\Http\Message\ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var OriginNegotiatorInterface
-     */
-    private $originNegotiator;
+    private \Chubbyphp\Cors\Negotiation\Origin\OriginNegotiatorInterface $originNegotiator;
 
-    /**
-     * @var MethodNegotiatorInterface
-     */
-    private $methodNegotiator;
+    private \Chubbyphp\Cors\Negotiation\MethodNegotiatorInterface $methodNegotiator;
 
-    /**
-     * @var HeadersNegotiatorInterface
-     */
-    private $headersNegotiator;
+    private \Chubbyphp\Cors\Negotiation\HeadersNegotiatorInterface $headersNegotiator;
 
     /**
      * @var array<string>
      */
-    private $exposeHeaders;
+    private array $exposeHeaders;
 
-    /**
-     * @var bool
-     */
-    private $allowCredentials;
+    private bool $allowCredentials;
 
-    /**
-     * @var int
-     */
-    private $maxAge;
+    private int $maxAge;
 
     /**
      * @param array<string> $exposeHeaders

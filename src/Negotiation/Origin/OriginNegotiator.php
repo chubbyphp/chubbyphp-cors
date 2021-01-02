@@ -11,7 +11,7 @@ final class OriginNegotiator implements OriginNegotiatorInterface
     /**
      * @var array<AllowOriginInterface>
      */
-    private $allowOrigins;
+    private array $allowOrigins;
 
     /**
      * @param array<AllowOriginInterface> $allowOrigins

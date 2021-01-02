@@ -11,7 +11,7 @@ final class MethodNegotiator implements MethodNegotiatorInterface
     /**
      * @var array<string>
      */
-    private $allowMethods;
+    private array $allowMethods;
 
     /**
      * @param array<string> $allowMethods

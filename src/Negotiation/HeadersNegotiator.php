@@ -11,7 +11,7 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
     /**
      * @var array<string>
      */
-    private $allowHeaders;
+    private array $allowHeaders;
 
     /**
      * @param array<string> $allowHeaders
