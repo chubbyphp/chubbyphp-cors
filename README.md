@@ -1,8 +1,8 @@
 # chubbyphp-cors
 
-[![Build Status](https://api.travis-ci.org/chubbyphp/chubbyphp-cors.png?branch=master)](https://travis-ci.org/chubbyphp/chubbyphp-cors)
+[![CI](https://github.com/chubbyphp/chubbyphp-cors/workflows/CI/badge.svg?branch=master)](https://github.com/chubbyphp/chubbyphp-cors/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-cors/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-cors?branch=master)
-[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/chubbyphp-cors/master)](https://travis-ci.org/chubbyphp/chubbyphp-cors)
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/chubbyphp/chubbyphp-cors/master)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/chubbyphp-cors/master)
 [![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
