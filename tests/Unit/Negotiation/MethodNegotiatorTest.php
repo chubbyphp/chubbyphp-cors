@@ -21,7 +21,7 @@ final class MethodNegotiatorTest extends TestCase
 
     public function testWithEmptyMethod(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getHeaderLine')
                 ->with(MethodNegotiator::HEADER)
@@ -35,7 +35,7 @@ final class MethodNegotiatorTest extends TestCase
 
     public function testWithAllowedMethod(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getHeaderLine')
                 ->with(MethodNegotiator::HEADER)
@@ -49,7 +49,7 @@ final class MethodNegotiatorTest extends TestCase
 
     public function testWithNotAllowedMethod(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getHeaderLine')
                 ->with(MethodNegotiator::HEADER)

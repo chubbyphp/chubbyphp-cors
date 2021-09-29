@@ -68,7 +68,7 @@ final class CorsMiddlewareFactoryTest extends TestCase
         $allowCredentialsReflectionProperty = new \ReflectionProperty($service, 'allowCredentials');
         $allowCredentialsReflectionProperty->setAccessible(true);
 
-        self::assertSame(false, $allowCredentialsReflectionProperty->getValue($service));
+        self::assertFalse($allowCredentialsReflectionProperty->getValue($service));
 
         $maxAgeReflectionProperty = new \ReflectionProperty($service, 'maxAge');
         $maxAgeReflectionProperty->setAccessible(true);
@@ -124,7 +124,7 @@ final class CorsMiddlewareFactoryTest extends TestCase
         $allowCredentialsReflectionProperty = new \ReflectionProperty($service, 'allowCredentials');
         $allowCredentialsReflectionProperty->setAccessible(true);
 
-        self::assertSame(true, $allowCredentialsReflectionProperty->getValue($service));
+        self::assertTrue($allowCredentialsReflectionProperty->getValue($service));
 
         $maxAgeReflectionProperty = new \ReflectionProperty($service, 'maxAge');
         $maxAgeReflectionProperty->setAccessible(true);
@@ -184,7 +184,7 @@ final class CorsMiddlewareFactoryTest extends TestCase
         $allowCredentialsReflectionProperty = new \ReflectionProperty($service, 'allowCredentials');
         $allowCredentialsReflectionProperty->setAccessible(true);
 
-        self::assertSame(true, $allowCredentialsReflectionProperty->getValue($service));
+        self::assertTrue($allowCredentialsReflectionProperty->getValue($service));
 
         $maxAgeReflectionProperty = new \ReflectionProperty($service, 'maxAge');
         $maxAgeReflectionProperty->setAccessible(true);

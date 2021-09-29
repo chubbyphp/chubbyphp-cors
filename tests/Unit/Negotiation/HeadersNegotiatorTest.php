@@ -21,7 +21,7 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('hasHeader')
                 ->with(HeadersNegotiator::HEADER)
@@ -35,7 +35,7 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithSameHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('hasHeader')
                 ->with(HeadersNegotiator::HEADER)
@@ -52,7 +52,7 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithSameHeadersLowerCase(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('hasHeader')
                 ->with(HeadersNegotiator::HEADER)
@@ -69,7 +69,7 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithLessHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('hasHeader')
                 ->with(HeadersNegotiator::HEADER)
@@ -86,7 +86,7 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithToManyHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('hasHeader')
                 ->with(HeadersNegotiator::HEADER)

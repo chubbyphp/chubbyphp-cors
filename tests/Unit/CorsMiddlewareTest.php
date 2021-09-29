@@ -27,23 +27,23 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testPreflightWithoutOrigin(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('options'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(204, '')->willReturn($response),
         ]);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn(null),
         ]);
@@ -66,26 +66,26 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testPreflightWithOrigin(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('options'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://mydomain.tld')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
         ]);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(204, '')->willReturn($response),
         ]);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn('https://mydomain.tld'),
         ]);
@@ -110,27 +110,27 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testPreflightWithOriginAndMethod(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('options'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://mydomain.tld')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Methods', 'GET, POST')->willReturnSelf(),
         ]);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(204, '')->willReturn($response),
         ]);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn('https://mydomain.tld'),
         ]);
@@ -158,12 +158,12 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testPreflightWithOriginAndMethodAndHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('options'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://mydomain.tld')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
@@ -172,15 +172,15 @@ final class CorsMiddlewareTest extends TestCase
             Call::create('withHeader')->with('Access-Control-Max-Age', '600')->willReturnSelf(),
         ]);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(204, '')->willReturn($response),
         ]);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn('https://mydomain.tld'),
         ]);
@@ -209,12 +209,12 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testPreflightWithOriginAndCredentialsAndExposeHeadersAndMethodAndHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('options'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://mydomain.tld')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'true')->willReturnSelf(),
@@ -224,15 +224,15 @@ final class CorsMiddlewareTest extends TestCase
             Call::create('withHeader')->with('Access-Control-Max-Age', '7200')->willReturnSelf(),
         ]);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
             Call::create('createResponse')->with(204, '')->willReturn($response),
         ]);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn('https://mydomain.tld'),
         ]);
@@ -264,23 +264,23 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testWithoutOrigin(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('get'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class, [
             Call::create('handle')->with($request)->willReturn($response),
         ]);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn(null),
         ]);
@@ -303,26 +303,26 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testWithOrigin(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('get'),
         ]);
 
-        /** @var ResponseInterface|MockObject $response */
+        /** @var MockObject|ResponseInterface $response */
         $response = $this->getMockByCalls(ResponseInterface::class, [
             Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://mydomain.tld')->willReturnSelf(),
             Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'false')->willReturnSelf(),
         ]);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class, [
             Call::create('handle')->with($request)->willReturn($response),
         ]);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn('https://mydomain.tld'),
         ]);
@@ -345,7 +345,7 @@ final class CorsMiddlewareTest extends TestCase
 
     public function testWithOriginAndCredentialsAndExposeHeaders(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getMethod')->with()->willReturn('get'),
         ]);
@@ -356,15 +356,15 @@ final class CorsMiddlewareTest extends TestCase
             Call::create('withHeader')->with('Access-Control-Expose-Headers', 'X-C-1, X-C-2')->willReturnSelf(),
         ]);
 
-        /** @var RequestHandlerInterface|MockObject $requestHandler */
+        /** @var MockObject|RequestHandlerInterface $requestHandler */
         $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class, [
             Call::create('handle')->with($request)->willReturn($response),
         ]);
 
-        /** @var ResponseFactoryInterface|MockObject $responseFactory */
+        /** @var MockObject|ResponseFactoryInterface $responseFactory */
         $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
 
-        /** @var OriginNegotiatorInterface|MockObject $originNegotiator */
+        /** @var MockObject|OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class, [
             Call::create('negotiate')->with($request)->willReturn('https://mydomain.tld'),
         ]);

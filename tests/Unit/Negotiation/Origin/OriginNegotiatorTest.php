@@ -23,7 +23,7 @@ final class OriginNegotiatorTest extends TestCase
 
     public function testWithMissingOrEmptyOrigin(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn(''),
         ]);
@@ -38,7 +38,7 @@ final class OriginNegotiatorTest extends TestCase
 
     public function testDoesMatch(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://myproject.com'),
             Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://otherproject.ch'),
@@ -57,7 +57,7 @@ final class OriginNegotiatorTest extends TestCase
 
     public function testNotDoesMatch(): void
     {
-        /** @var ServerRequestInterface|MockObject $request */
+        /** @var MockObject|ServerRequestInterface $request */
         $request = $this->getMockByCalls(ServerRequestInterface::class, [
             Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://myproject.ch'),
             Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('ttps://otherproject.ch'),
