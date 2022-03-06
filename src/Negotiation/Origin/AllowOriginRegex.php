@@ -6,11 +6,8 @@ namespace Chubbyphp\Cors\Negotiation\Origin;
 
 final class AllowOriginRegex implements AllowOriginInterface
 {
-    private string $pattern;
-
-    public function __construct(string $pattern)
+    public function __construct(private string $pattern)
     {
-        $this->pattern = $pattern;
     }
 
     public function match(string $origin): bool

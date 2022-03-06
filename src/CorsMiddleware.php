@@ -15,42 +15,18 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class CorsMiddleware implements MiddlewareInterface
 {
-    private \Psr\Http\Message\ResponseFactoryInterface $responseFactory;
-
-    private \Chubbyphp\Cors\Negotiation\Origin\OriginNegotiatorInterface $originNegotiator;
-
-    private \Chubbyphp\Cors\Negotiation\MethodNegotiatorInterface $methodNegotiator;
-
-    private \Chubbyphp\Cors\Negotiation\HeadersNegotiatorInterface $headersNegotiator;
-
-    /**
-     * @var array<string>
-     */
-    private array $exposeHeaders;
-
-    private bool $allowCredentials;
-
-    private int $maxAge;
-
     /**
      * @param array<string> $exposeHeaders
      */
     public function __construct(
-        ResponseFactoryInterface $responseFactory,
-        OriginNegotiatorInterface $originNegotiator,
-        MethodNegotiatorInterface $methodNegotiator,
-        HeadersNegotiatorInterface $headersNegotiator,
-        array $exposeHeaders = [],
-        bool $allowCredentials = false,
-        int $maxAge = 600
+        private ResponseFactoryInterface $responseFactory,
+        private OriginNegotiatorInterface $originNegotiator,
+        private MethodNegotiatorInterface $methodNegotiator,
+        private HeadersNegotiatorInterface $headersNegotiator,
+        private array $exposeHeaders = [],
+        private bool $allowCredentials = false,
+        private int $maxAge = 600
     ) {
-        $this->responseFactory = $responseFactory;
-        $this->originNegotiator = $originNegotiator;
-        $this->methodNegotiator = $methodNegotiator;
-        $this->headersNegotiator = $headersNegotiator;
-        $this->exposeHeaders = $exposeHeaders;
-        $this->allowCredentials = $allowCredentials;
-        $this->maxAge = $maxAge;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

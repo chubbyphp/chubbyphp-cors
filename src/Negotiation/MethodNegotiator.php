@@ -30,13 +30,7 @@ final class MethodNegotiator implements MethodNegotiatorInterface
             return false;
         }
 
-        foreach ($this->allowMethods as $allowMethod) {
-            if ($allowMethod === $method) {
-                return true;
-            }
-        }
-
-        return false;
+        return \in_array($method, $this->allowMethods, true);
     }
 
     /**
