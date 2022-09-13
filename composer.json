@@ -1,7 +1,14 @@
 {
     "name": "chubbyphp/chubbyphp-cors",
     "description": "A minimal CORS middleware for PSR 15.",
-    "keywords": ["chubbyphp", "slim", "cors", "middleware", "psr-7", "psr-15"],
+    "keywords": [
+        "chubbyphp",
+        "slim",
+        "cors",
+        "middleware",
+        "psr-7",
+        "psr-15"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -28,10 +35,14 @@
         "phpunit/phpunit": "^9.5.17"
     },
     "autoload": {
-        "psr-4": { "Chubbyphp\\Cors\\": "src/" }
+        "psr-4": {
+            "Chubbyphp\\Cors\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Chubbyphp\\Tests\\Cors\\": "tests/" }
+        "psr-4": {
+            "Chubbyphp\\Tests\\Cors\\": "tests/"
+        }
     },
     "config": {
         "sort-packages": true,
@@ -57,7 +68,7 @@
             "@test:cs"
         ],
         "test:cs": "mkdir -p build && PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --cache-file=build/phpcs.cache",
-        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=100 --verbose --coverage=build/phpunit",
+        "test:infection": "vendor/bin/infection --threads=$(nproc) --min-msi=98 --verbose --coverage=build/phpunit",
         "test:integration": "vendor/bin/phpunit --testsuite=Integration --cache-result-file=build/phpunit/result.cache",
         "test:lint": "mkdir -p build && find src tests -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l | tee build/phplint.log",
         "test:loc": "mkdir -p build && vendor/bin/phploc src | tee build/phploc.log",
