@@ -6,9 +6,7 @@ namespace Chubbyphp\Cors\Negotiation\Origin;
 
 final class AllowOriginExact implements AllowOriginInterface
 {
-    public function __construct(private string $value)
-    {
-    }
+    public function __construct(private string $value) {}
 
     public function match(string $origin): bool
     {

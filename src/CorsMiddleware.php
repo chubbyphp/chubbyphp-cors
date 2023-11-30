@@ -26,8 +26,7 @@ final class CorsMiddleware implements MiddlewareInterface
         private array $exposeHeaders = [],
         private bool $allowCredentials = false,
         private int $maxAge = 600
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
