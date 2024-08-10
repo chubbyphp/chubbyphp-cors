@@ -1,10 +1,10 @@
 # chubbyphp-cors
 
-[![CI](https://github.com/chubbyphp/chubbyphp-cors/workflows/CI/badge.svg?branch=master)](https://github.com/chubbyphp/chubbyphp-cors/actions?query=workflow%3ACI)
+[![CI](https://github.com/chubbyphp/chubbyphp-cors/actions/workflows/ci.yml/badge.svg)](https://github.com/chubbyphp/chubbyphp-cors/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/chubbyphp/chubbyphp-cors/badge.svg?branch=master)](https://coveralls.io/github/chubbyphp/chubbyphp-cors?branch=master)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fchubbyphp%2Fchubbyphp-cors%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/chubbyphp/chubbyphp-cors/master)
-[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v/stable.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
-[![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/downloads.png)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
+[![Latest Stable Version](https://poser.pugx.org/chubbyphp/chubbyphp-cors/v)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
+[![Total Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/downloads)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 [![Monthly Downloads](https://poser.pugx.org/chubbyphp/chubbyphp-cors/d/monthly)](https://packagist.org/packages/chubbyphp/chubbyphp-cors)
 
 [![bugs](https://sonarcloud.io/api/project_badges/measure?project=chubbyphp_chubbyphp-cors&metric=bugs)](https://sonarcloud.io/dashboard?id=chubbyphp_chubbyphp-cors)
