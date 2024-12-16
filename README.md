@@ -26,8 +26,8 @@ A minimal CORS middleware for PSR 15.
 
 ## Requirements
 
- * php: ^8.1
- * [psr/http-factory][2]: ^1.0.2
+ * php: ^8.2
+ * [psr/http-factory][2]: ^1.1
  * [psr/http-message][3]: ^1.1|^2.0
  * [psr/http-server-middleware][4]: ^1.0.2
 
@@ -36,7 +36,7 @@ A minimal CORS middleware for PSR 15.
 Through [Composer](http://getcomposer.org) as [chubbyphp/chubbyphp-cors][1].
 
 ```sh
-composer require chubbyphp/chubbyphp-cors "^1.5"
+composer require chubbyphp/chubbyphp-cors "^1.6"
 ```
 
 ## Usage
