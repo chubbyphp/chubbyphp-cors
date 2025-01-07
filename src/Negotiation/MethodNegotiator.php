@@ -11,14 +11,13 @@ final class MethodNegotiator implements MethodNegotiatorInterface
     /**
      * @var array<string>
      */
-    private array $allowMethods;
+    private array $allowMethods = [];
 
     /**
      * @param array<string> $allowMethods
      */
     public function __construct(array $allowMethods)
     {
-        $this->allowMethods = [];
         foreach ($allowMethods as $allowMethod) {
             $this->addAllowMethod($allowMethod);
         }

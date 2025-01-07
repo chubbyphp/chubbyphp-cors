@@ -11,14 +11,13 @@ final class HeadersNegotiator implements HeadersNegotiatorInterface
     /**
      * @var array<string>
      */
-    private array $allowHeaders;
+    private array $allowHeaders = [];
 
     /**
      * @param array<string> $allowHeaders
      */
     public function __construct(array $allowHeaders)
     {
-        $this->allowHeaders = [];
         foreach ($allowHeaders as $allowHeader) {
             $this->addAllowHeader($allowHeader);
         }

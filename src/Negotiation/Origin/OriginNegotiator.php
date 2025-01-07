@@ -11,14 +11,13 @@ final class OriginNegotiator implements OriginNegotiatorInterface
     /**
      * @var array<AllowOriginInterface>
      */
-    private array $allowOrigins;
+    private array $allowOrigins = [];
 
     /**
      * @param array<AllowOriginInterface> $allowOrigins
      */
     public function __construct(array $allowOrigins)
     {
-        $this->allowOrigins = [];
         foreach ($allowOrigins as $allowOrigin) {
             $this->addAllowOrigin($allowOrigin);
         }
