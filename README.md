@@ -49,7 +49,7 @@ composer require chubbyphp/chubbyphp-cors "^1.6"
 
 ## Copyright
 
-2024 Dominik Zogg
+2025 Dominik Zogg
 
 [1]: https://packagist.org/packages/chubbyphp/chubbyphp-cors
 
