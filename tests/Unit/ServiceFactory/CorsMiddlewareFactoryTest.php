@@ -9,8 +9,8 @@ use Chubbyphp\Cors\Negotiation\HeadersNegotiatorInterface;
 use Chubbyphp\Cors\Negotiation\MethodNegotiatorInterface;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiatorInterface;
 use Chubbyphp\Cors\ServiceFactory\CorsMiddlewareFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -22,36 +22,36 @@ use Psr\Http\Message\ResponseFactoryInterface;
  */
 final class CorsMiddlewareFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvokeWithDefaults(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var OriginNegotiatorInterface $originNegotiator */
-        $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class);
+        $originNegotiator = $builder->create(OriginNegotiatorInterface::class, []);
 
         /** @var MethodNegotiatorInterface $methodNegotiator */
-        $methodNegotiator = $this->getMockByCalls(MethodNegotiatorInterface::class);
+        $methodNegotiator = $builder->create(MethodNegotiatorInterface::class, []);
 
         /** @var HeadersNegotiatorInterface $headersNegotiator */
-        $headersNegotiator = $this->getMockByCalls(HeadersNegotiatorInterface::class);
+        $headersNegotiator = $builder->create(HeadersNegotiatorInterface::class, []);
 
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'chubbyphp' => [
                     'cors' => [],
                 ],
             ]),
-            Call::create('has')->with(OriginNegotiatorInterface::class)->willReturn(true),
-            Call::create('get')->with(OriginNegotiatorInterface::class)->willReturn($originNegotiator),
-            Call::create('has')->with(MethodNegotiatorInterface::class)->willReturn(true),
-            Call::create('get')->with(MethodNegotiatorInterface::class)->willReturn($methodNegotiator),
-            Call::create('has')->with(HeadersNegotiatorInterface::class)->willReturn(true),
-            Call::create('get')->with(HeadersNegotiatorInterface::class)->willReturn($headersNegotiator),
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
+            new WithReturn('has', [OriginNegotiatorInterface::class], true),
+            new WithReturn('get', [OriginNegotiatorInterface::class], $originNegotiator),
+            new WithReturn('has', [MethodNegotiatorInterface::class], true),
+            new WithReturn('get', [MethodNegotiatorInterface::class], $methodNegotiator),
+            new WithReturn('has', [HeadersNegotiatorInterface::class], true),
+            new WithReturn('get', [HeadersNegotiatorInterface::class], $headersNegotiator),
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
         ]);
 
         $factory = new CorsMiddlewareFactory();
@@ -78,21 +78,23 @@ final class CorsMiddlewareFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var OriginNegotiatorInterface $originNegotiator */
-        $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class);
+        $originNegotiator = $builder->create(OriginNegotiatorInterface::class, []);
 
         /** @var MethodNegotiatorInterface $methodNegotiator */
-        $methodNegotiator = $this->getMockByCalls(MethodNegotiatorInterface::class);
+        $methodNegotiator = $builder->create(MethodNegotiatorInterface::class, []);
 
         /** @var HeadersNegotiatorInterface $headersNegotiator */
-        $headersNegotiator = $this->getMockByCalls(HeadersNegotiatorInterface::class);
+        $headersNegotiator = $builder->create(HeadersNegotiatorInterface::class, []);
 
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'chubbyphp' => [
                     'cors' => [
                         'exposeHeaders' => ['Authorization'],
@@ -101,13 +103,13 @@ final class CorsMiddlewareFactoryTest extends TestCase
                     ],
                 ],
             ]),
-            Call::create('has')->with(OriginNegotiatorInterface::class)->willReturn(true),
-            Call::create('get')->with(OriginNegotiatorInterface::class)->willReturn($originNegotiator),
-            Call::create('has')->with(MethodNegotiatorInterface::class)->willReturn(true),
-            Call::create('get')->with(MethodNegotiatorInterface::class)->willReturn($methodNegotiator),
-            Call::create('has')->with(HeadersNegotiatorInterface::class)->willReturn(true),
-            Call::create('get')->with(HeadersNegotiatorInterface::class)->willReturn($headersNegotiator),
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
+            new WithReturn('has', [OriginNegotiatorInterface::class], true),
+            new WithReturn('get', [OriginNegotiatorInterface::class], $originNegotiator),
+            new WithReturn('has', [MethodNegotiatorInterface::class], true),
+            new WithReturn('get', [MethodNegotiatorInterface::class], $methodNegotiator),
+            new WithReturn('has', [HeadersNegotiatorInterface::class], true),
+            new WithReturn('get', [HeadersNegotiatorInterface::class], $headersNegotiator),
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
         ]);
 
         $factory = new CorsMiddlewareFactory();
@@ -134,21 +136,23 @@ final class CorsMiddlewareFactoryTest extends TestCase
 
     public function testCallStatic(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var OriginNegotiatorInterface $originNegotiator */
-        $originNegotiator = $this->getMockByCalls(OriginNegotiatorInterface::class);
+        $originNegotiator = $builder->create(OriginNegotiatorInterface::class, []);
 
         /** @var MethodNegotiatorInterface $methodNegotiator */
-        $methodNegotiator = $this->getMockByCalls(MethodNegotiatorInterface::class);
+        $methodNegotiator = $builder->create(MethodNegotiatorInterface::class, []);
 
         /** @var HeadersNegotiatorInterface $headersNegotiator */
-        $headersNegotiator = $this->getMockByCalls(HeadersNegotiatorInterface::class);
+        $headersNegotiator = $builder->create(HeadersNegotiatorInterface::class, []);
 
         /** @var ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'chubbyphp' => [
                     'cors' => [
                         'default' => [
@@ -159,13 +163,13 @@ final class CorsMiddlewareFactoryTest extends TestCase
                     ],
                 ],
             ]),
-            Call::create('has')->with(OriginNegotiatorInterface::class.'default')->willReturn(true),
-            Call::create('get')->with(OriginNegotiatorInterface::class.'default')->willReturn($originNegotiator),
-            Call::create('has')->with(MethodNegotiatorInterface::class.'default')->willReturn(true),
-            Call::create('get')->with(MethodNegotiatorInterface::class.'default')->willReturn($methodNegotiator),
-            Call::create('has')->with(HeadersNegotiatorInterface::class.'default')->willReturn(true),
-            Call::create('get')->with(HeadersNegotiatorInterface::class.'default')->willReturn($headersNegotiator),
-            Call::create('get')->with(ResponseFactoryInterface::class)->willReturn($responseFactory),
+            new WithReturn('has', [OriginNegotiatorInterface::class.'default'], true),
+            new WithReturn('get', [OriginNegotiatorInterface::class.'default'], $originNegotiator),
+            new WithReturn('has', [MethodNegotiatorInterface::class.'default'], true),
+            new WithReturn('get', [MethodNegotiatorInterface::class.'default'], $methodNegotiator),
+            new WithReturn('has', [HeadersNegotiatorInterface::class.'default'], true),
+            new WithReturn('get', [HeadersNegotiatorInterface::class.'default'], $headersNegotiator),
+            new WithReturn('get', [ResponseFactoryInterface::class], $responseFactory),
         ]);
 
         $factory = [CorsMiddlewareFactory::class, 'default'];

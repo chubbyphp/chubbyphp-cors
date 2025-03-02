@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Chubbyphp\Tests\Cors\Functional;
+namespace Chubbyphp\Tests\Cors\Integration;
 
 use Chubbyphp\Cors\CorsMiddleware;
 use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
 use Chubbyphp\Cors\Negotiation\MethodNegotiator;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockMethod\WithReturnSelf;
+use Chubbyphp\Mock\MockObjectBuilder;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -24,30 +26,31 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 final class CorsMiddlewareTest extends TestCase
 {
-    use MockByCallsTrait;
-
+    #[DoesNotPerformAssertions]
     public function testDefault(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with('Origin')->willReturn('https://somehost.com'),
-            Call::create('getMethod')->with()->willReturn('get'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', ['Origin'], 'https://somehost.com'),
+            new WithReturn('getMethod', [], 'get'),
         ]);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://somehost.com')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'true')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Expose-Headers', 'X-Custom')->willReturnSelf(),
+        /** @var ResponseInterface $response */
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Access-Control-Allow-Origin', 'https://somehost.com']),
+            new WithReturnSelf('withHeader', ['Access-Control-Allow-Credentials', 'true']),
+            new WithReturnSelf('withHeader', ['Access-Control-Expose-Headers', 'X-Custom']),
         ]);
 
-        /** @var MockObject|RequestHandlerInterface $requestHandler */
-        $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class, [
-            Call::create('handle')->with($request)->willReturn($response),
+        /** @var RequestHandlerInterface $requestHandler */
+        $requestHandler = $builder->create(RequestHandlerInterface::class, [
+            new WithReturn('handle', [$request], $response),
         ]);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class);
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, []);
 
         $originNegotiator = new OriginNegotiator([
             new AllowOriginExact('https://somehost.com'),
@@ -70,33 +73,36 @@ final class CorsMiddlewareTest extends TestCase
         $middleware->process($request, $requestHandler);
     }
 
+    #[DoesNotPerformAssertions]
     public function testPreflight(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with('Origin')->willReturn('https://somehost.com'),
-            Call::create('getMethod')->with()->willReturn('options'),
-            Call::create('getHeaderLine')->with('Access-Control-Request-Method')->willReturn('POST'),
-            Call::create('hasHeader')->with('Access-Control-Request-Headers')->willReturn(true),
-            Call::create('getHeaderLine')->with('Access-Control-Request-Headers')->willReturn('X-Some'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', ['Origin'], 'https://somehost.com'),
+            new WithReturn('getMethod', [], 'options'),
+            new WithReturn('getHeaderLine', ['Access-Control-Request-Method'], 'POST'),
+            new WithReturn('hasHeader', ['Access-Control-Request-Headers'], true),
+            new WithReturn('getHeaderLine', ['Access-Control-Request-Headers'], 'X-Some'),
         ]);
 
-        /** @var MockObject|ResponseInterface $response */
-        $response = $this->getMockByCalls(ResponseInterface::class, [
-            Call::create('withHeader')->with('Access-Control-Allow-Origin', 'https://somehost.com')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Credentials', 'true')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Expose-Headers', 'X-Custom')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Methods', 'GET, POST')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Allow-Headers', 'X-Awe, X-Some')->willReturnSelf(),
-            Call::create('withHeader')->with('Access-Control-Max-Age', '7200')->willReturnSelf(),
+        /** @var ResponseInterface $response */
+        $response = $builder->create(ResponseInterface::class, [
+            new WithReturnSelf('withHeader', ['Access-Control-Allow-Origin', 'https://somehost.com']),
+            new WithReturnSelf('withHeader', ['Access-Control-Allow-Credentials', 'true']),
+            new WithReturnSelf('withHeader', ['Access-Control-Expose-Headers', 'X-Custom']),
+            new WithReturnSelf('withHeader', ['Access-Control-Allow-Methods', 'GET, POST']),
+            new WithReturnSelf('withHeader', ['Access-Control-Allow-Headers', 'X-Awe, X-Some']),
+            new WithReturnSelf('withHeader', ['Access-Control-Max-Age', '7200']),
         ]);
 
-        /** @var MockObject|RequestHandlerInterface $requestHandler */
-        $requestHandler = $this->getMockByCalls(RequestHandlerInterface::class);
+        /** @var RequestHandlerInterface $requestHandler */
+        $requestHandler = $builder->create(RequestHandlerInterface::class, []);
 
-        /** @var MockObject|ResponseFactoryInterface $responseFactory */
-        $responseFactory = $this->getMockByCalls(ResponseFactoryInterface::class, [
-            Call::create('createResponse')->with(204, '')->willReturn($response),
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $builder->create(ResponseFactoryInterface::class, [
+            new WithReturn('createResponse', [204, ''], $response),
         ]);
 
         $originNegotiator = new OriginNegotiator([

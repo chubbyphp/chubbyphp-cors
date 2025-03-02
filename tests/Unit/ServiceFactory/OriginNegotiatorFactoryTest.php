@@ -8,8 +8,8 @@ use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
 use Chubbyphp\Cors\ServiceFactory\OriginNegotiatorFactory;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -20,13 +20,13 @@ use Psr\Container\ContainerInterface;
  */
 final class OriginNegotiatorFactoryTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testInvoke(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'chubbyphp' => [
                     'cors' => [
                         'allowOrigins' => [
@@ -55,9 +55,11 @@ final class OriginNegotiatorFactoryTest extends TestCase
 
     public function testCallStatic(): void
     {
+        $builder = new MockObjectBuilder();
+
         /** @var ContainerInterface $container */
-        $container = $this->getMockByCalls(ContainerInterface::class, [
-            Call::create('get')->with('config')->willReturn([
+        $container = $builder->create(ContainerInterface::class, [
+            new WithReturn('get', ['config'], [
                 'chubbyphp' => [
                     'cors' => [
                         'default' => [

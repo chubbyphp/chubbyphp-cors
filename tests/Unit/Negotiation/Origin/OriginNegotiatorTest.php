@@ -7,8 +7,8 @@ namespace Chubbyphp\Tests\Cors\Unit\Negotiation\Origin;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginExact;
 use Chubbyphp\Cors\Negotiation\Origin\AllowOriginRegex;
 use Chubbyphp\Cors\Negotiation\Origin\OriginNegotiator;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -19,13 +19,13 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class OriginNegotiatorTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testWithMissingOrEmptyOrigin(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn(''),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], ''),
         ]);
 
         $negotiator = new OriginNegotiator([
@@ -38,11 +38,13 @@ final class OriginNegotiatorTest extends TestCase
 
     public function testDoesMatch(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://myproject.com'),
-            Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://otherproject.ch'),
-            Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://otherproject.com'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], 'https://myproject.com'),
+            new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], 'https://otherproject.ch'),
+            new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], 'https://otherproject.com'),
         ]);
 
         $negotiator = new OriginNegotiator([
@@ -57,10 +59,11 @@ final class OriginNegotiatorTest extends TestCase
 
     public function testNotDoesMatch(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('https://myproject.ch'),
-            Call::create('getHeaderLine')->with(OriginNegotiator::HEADER)->willReturn('ttps://otherproject.ch'),
+        $builder = new MockObjectBuilder();
+
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], 'https://myproject.ch'),
+            new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], 'ttps://otherproject.ch'),
         ]);
 
         $negotiator = new OriginNegotiator([

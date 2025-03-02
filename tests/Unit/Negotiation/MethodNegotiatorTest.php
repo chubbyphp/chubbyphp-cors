@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Chubbyphp\Tests\Cors\Unit\Negotiation;
 
 use Chubbyphp\Cors\Negotiation\MethodNegotiator;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -17,15 +17,13 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class MethodNegotiatorTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testWithEmptyMethod(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')
-                ->with(MethodNegotiator::HEADER)
-                ->willReturn(''),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', [MethodNegotiator::HEADER], ''),
         ]);
 
         $negotiator = new MethodNegotiator(['GET', 'POST']);
@@ -35,11 +33,11 @@ final class MethodNegotiatorTest extends TestCase
 
     public function testWithAllowedMethod(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')
-                ->with(MethodNegotiator::HEADER)
-                ->willReturn('POST'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', [MethodNegotiator::HEADER], 'POST'),
         ]);
 
         $negotiator = new MethodNegotiator(['GET', 'POST']);
@@ -49,11 +47,11 @@ final class MethodNegotiatorTest extends TestCase
 
     public function testWithNotAllowedMethod(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('getHeaderLine')
-                ->with(MethodNegotiator::HEADER)
-                ->willReturn('PUT'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('getHeaderLine', [MethodNegotiator::HEADER], 'PUT'),
         ]);
 
         $negotiator = new MethodNegotiator(['GET', 'POST']);
