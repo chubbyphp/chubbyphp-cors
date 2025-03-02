@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Chubbyphp\Tests\Cors\Unit\Negotiation;
 
 use Chubbyphp\Cors\Negotiation\HeadersNegotiator;
-use Chubbyphp\Mock\Call;
-use Chubbyphp\Mock\MockByCallsTrait;
+use Chubbyphp\Mock\MockMethod\WithReturn;
+use Chubbyphp\Mock\MockObjectBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -17,15 +17,13 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class HeadersNegotiatorTest extends TestCase
 {
-    use MockByCallsTrait;
-
     public function testWithHeaders(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('hasHeader')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn(false),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('hasHeader', [HeadersNegotiator::HEADER], false),
         ]);
 
         $negotiator = new HeadersNegotiator(['Authorization', 'Accept', 'Content-Type']);
@@ -35,14 +33,12 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithSameHeaders(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('hasHeader')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn(true),
-            Call::create('getHeaderLine')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn('Accept, Authorization, Content-Type'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('hasHeader', [HeadersNegotiator::HEADER], true),
+            new WithReturn('getHeaderLine', [HeadersNegotiator::HEADER], 'Accept, Authorization, Content-Type'),
         ]);
 
         $negotiator = new HeadersNegotiator(['Authorization', 'Accept', 'Content-Type']);
@@ -52,14 +48,16 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithSameHeadersLowerCase(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('hasHeader')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn(true),
-            Call::create('getHeaderLine')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn('accept, Authorization, Content-Type, x-custom'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('hasHeader', [HeadersNegotiator::HEADER], true),
+            new WithReturn(
+                'getHeaderLine',
+                [HeadersNegotiator::HEADER],
+                'accept, Authorization, Content-Type, x-custom'
+            ),
         ]);
 
         $negotiator = new HeadersNegotiator(['x-custom', 'authorization', 'Accept', 'content-Type']);
@@ -69,14 +67,12 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithLessHeaders(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('hasHeader')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn(true),
-            Call::create('getHeaderLine')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn('Authorization, Accept'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('hasHeader', [HeadersNegotiator::HEADER], true),
+            new WithReturn('getHeaderLine', [HeadersNegotiator::HEADER], 'Authorization, Accept'),
         ]);
 
         $negotiator = new HeadersNegotiator(['Authorization', 'Accept', 'Content-Type']);
@@ -86,14 +82,12 @@ final class HeadersNegotiatorTest extends TestCase
 
     public function testWithToManyHeaders(): void
     {
-        /** @var MockObject|ServerRequestInterface $request */
-        $request = $this->getMockByCalls(ServerRequestInterface::class, [
-            Call::create('hasHeader')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn(true),
-            Call::create('getHeaderLine')
-                ->with(HeadersNegotiator::HEADER)
-                ->willReturn('accept, Content-Type, Authorization'),
+        $builder = new MockObjectBuilder();
+
+        /** @var ServerRequestInterface $request */
+        $request = $builder->create(ServerRequestInterface::class, [
+            new WithReturn('hasHeader', [HeadersNegotiator::HEADER], true),
+            new WithReturn('getHeaderLine', [HeadersNegotiator::HEADER], 'accept, Content-Type, Authorization'),
         ]);
 
         $negotiator = new HeadersNegotiator(['Authorization', 'Accept']);
