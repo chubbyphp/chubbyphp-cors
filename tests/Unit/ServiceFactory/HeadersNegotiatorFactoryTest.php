@@ -40,7 +40,6 @@ final class HeadersNegotiatorFactoryTest extends TestCase
         self::assertInstanceOf(HeadersNegotiator::class, $service);
 
         $allowHeadersReflectionProperty = new \ReflectionProperty($service, 'allowHeaders');
-        $allowHeadersReflectionProperty->setAccessible(true);
 
         self::assertSame(['Accept', 'Content-Type'], $allowHeadersReflectionProperty->getValue($service));
     }
@@ -69,7 +68,6 @@ final class HeadersNegotiatorFactoryTest extends TestCase
         self::assertInstanceOf(HeadersNegotiator::class, $service);
 
         $allowHeadersReflectionProperty = new \ReflectionProperty($service, 'allowHeaders');
-        $allowHeadersReflectionProperty->setAccessible(true);
 
         self::assertSame(['Accept', 'Content-Type'], $allowHeadersReflectionProperty->getValue($service));
     }

@@ -45,7 +45,6 @@ final class OriginNegotiatorFactoryTest extends TestCase
         self::assertInstanceOf(OriginNegotiator::class, $service);
 
         $allowOriginsReflectionProperty = new \ReflectionProperty($service, 'allowOrigins');
-        $allowOriginsReflectionProperty->setAccessible(true);
 
         self::assertEquals([
             new AllowOriginExact('https://myproject.com'),
@@ -80,7 +79,6 @@ final class OriginNegotiatorFactoryTest extends TestCase
         self::assertInstanceOf(OriginNegotiator::class, $service);
 
         $allowOriginsReflectionProperty = new \ReflectionProperty($service, 'allowOrigins');
-        $allowOriginsReflectionProperty->setAccessible(true);
 
         self::assertEquals([
             new AllowOriginExact('https://myproject.com'),

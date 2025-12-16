@@ -40,7 +40,6 @@ final class MethodNegotiatorFactoryTest extends TestCase
         self::assertInstanceOf(MethodNegotiator::class, $service);
 
         $allowMethodsReflectionProperty = new \ReflectionProperty($service, 'allowMethods');
-        $allowMethodsReflectionProperty->setAccessible(true);
 
         self::assertSame(['DELETE', 'GET', 'POST', 'PUT'], $allowMethodsReflectionProperty->getValue($service));
     }
@@ -69,7 +68,6 @@ final class MethodNegotiatorFactoryTest extends TestCase
         self::assertInstanceOf(MethodNegotiator::class, $service);
 
         $allowMethodsReflectionProperty = new \ReflectionProperty($service, 'allowMethods');
-        $allowMethodsReflectionProperty->setAccessible(true);
 
         self::assertSame(['DELETE', 'GET', 'POST', 'PUT'], $allowMethodsReflectionProperty->getValue($service));
     }

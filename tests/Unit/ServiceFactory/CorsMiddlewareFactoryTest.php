@@ -61,17 +61,14 @@ final class CorsMiddlewareFactoryTest extends TestCase
         self::assertInstanceOf(CorsMiddleware::class, $service);
 
         $exposeHeadersReflectionProperty = new \ReflectionProperty($service, 'exposeHeaders');
-        $exposeHeadersReflectionProperty->setAccessible(true);
 
         self::assertSame([], $exposeHeadersReflectionProperty->getValue($service));
 
         $allowCredentialsReflectionProperty = new \ReflectionProperty($service, 'allowCredentials');
-        $allowCredentialsReflectionProperty->setAccessible(true);
 
         self::assertFalse($allowCredentialsReflectionProperty->getValue($service));
 
         $maxAgeReflectionProperty = new \ReflectionProperty($service, 'maxAge');
-        $maxAgeReflectionProperty->setAccessible(true);
 
         self::assertSame(600, $maxAgeReflectionProperty->getValue($service));
     }
@@ -119,17 +116,14 @@ final class CorsMiddlewareFactoryTest extends TestCase
         self::assertInstanceOf(CorsMiddleware::class, $service);
 
         $exposeHeadersReflectionProperty = new \ReflectionProperty($service, 'exposeHeaders');
-        $exposeHeadersReflectionProperty->setAccessible(true);
 
         self::assertSame(['Authorization'], $exposeHeadersReflectionProperty->getValue($service));
 
         $allowCredentialsReflectionProperty = new \ReflectionProperty($service, 'allowCredentials');
-        $allowCredentialsReflectionProperty->setAccessible(true);
 
         self::assertTrue($allowCredentialsReflectionProperty->getValue($service));
 
         $maxAgeReflectionProperty = new \ReflectionProperty($service, 'maxAge');
-        $maxAgeReflectionProperty->setAccessible(true);
 
         self::assertSame(60, $maxAgeReflectionProperty->getValue($service));
     }
@@ -181,17 +175,14 @@ final class CorsMiddlewareFactoryTest extends TestCase
         self::assertInstanceOf(CorsMiddleware::class, $service);
 
         $exposeHeadersReflectionProperty = new \ReflectionProperty($service, 'exposeHeaders');
-        $exposeHeadersReflectionProperty->setAccessible(true);
 
         self::assertSame(['Authorization'], $exposeHeadersReflectionProperty->getValue($service));
 
         $allowCredentialsReflectionProperty = new \ReflectionProperty($service, 'allowCredentials');
-        $allowCredentialsReflectionProperty->setAccessible(true);
 
         self::assertTrue($allowCredentialsReflectionProperty->getValue($service));
 
         $maxAgeReflectionProperty = new \ReflectionProperty($service, 'maxAge');
-        $maxAgeReflectionProperty->setAccessible(true);
 
         self::assertSame(60, $maxAgeReflectionProperty->getValue($service));
     }
