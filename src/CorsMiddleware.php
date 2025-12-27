@@ -19,13 +19,13 @@ final class CorsMiddleware implements MiddlewareInterface
      * @param array<string> $exposeHeaders
      */
     public function __construct(
-        private ResponseFactoryInterface $responseFactory,
-        private OriginNegotiatorInterface $originNegotiator,
-        private MethodNegotiatorInterface $methodNegotiator,
-        private HeadersNegotiatorInterface $headersNegotiator,
-        private array $exposeHeaders = [],
-        private bool $allowCredentials = false,
-        private int $maxAge = 600
+        private readonly ResponseFactoryInterface $responseFactory,
+        private readonly OriginNegotiatorInterface $originNegotiator,
+        private readonly MethodNegotiatorInterface $methodNegotiator,
+        private readonly HeadersNegotiatorInterface $headersNegotiator,
+        private readonly array $exposeHeaders = [],
+        private readonly bool $allowCredentials = false,
+        private readonly int $maxAge = 600
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
