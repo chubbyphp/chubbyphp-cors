@@ -16,11 +16,15 @@ final class CorsMiddlewareFactory extends AbstractFactory
 {
     public function __invoke(ContainerInterface $container): CorsMiddleware
     {
-        $config = $this->resolveConfig($container->get('config')['chubbyphp']['cors'] ?? []);
+        /** @var array{chubbyphp?: array{cors?: array<string, mixed>}} $config */
+        $config = $container->get('config');
 
-        $exposeHeaders = $config['exposeHeaders'] ?? [];
-        $allowCredentials = $config['allowCredentials'] ?? false;
-        $maxAge = $config['maxAge'] ?? 600;
+        /** @var array{exposeHeaders?: array<string>, allowCredentials?: bool, maxAge?: int} $corsConfig */
+        $corsConfig = $this->resolveConfig($config['chubbyphp']['cors'] ?? []);
+
+        $exposeHeaders = $corsConfig['exposeHeaders'] ?? [];
+        $allowCredentials = $corsConfig['allowCredentials'] ?? false;
+        $maxAge = $corsConfig['maxAge'] ?? 600;
 
         /** @var OriginNegotiatorInterface $originNegotiator */
         $originNegotiator = $this->resolveDependency(
@@ -43,8 +47,11 @@ final class CorsMiddlewareFactory extends AbstractFactory
             HeadersNegotiatorFactory::class
         );
 
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+
         return new CorsMiddleware(
-            $container->get(ResponseFactoryInterface::class),
+            $responseFactory,
             $originNegotiator,
             $methodNegotiator,
             $headersNegotiator,

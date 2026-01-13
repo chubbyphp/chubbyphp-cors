@@ -12,8 +12,14 @@ final class MethodNegotiatorFactory extends AbstractFactory
 {
     public function __invoke(ContainerInterface $container): MethodNegotiator
     {
-        $config = $this->resolveConfig($container->get('config')['chubbyphp']['cors'] ?? []);
+        /** @var array{chubbyphp?: array{cors?: array<string, mixed>}} $config */
+        $config = $container->get('config');
 
-        return new MethodNegotiator($config['allowMethods'] ?? []);
+        /** @var array{allowMethods?: array<string>} $corsConfig */
+        $corsConfig = $this->resolveConfig($config['chubbyphp']['cors'] ?? []);
+
+        $allowMethods = $corsConfig['allowMethods'] ?? [];
+
+        return new MethodNegotiator($allowMethods);
     }
 }

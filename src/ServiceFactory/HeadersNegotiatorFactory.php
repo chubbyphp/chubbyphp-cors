@@ -12,8 +12,14 @@ final class HeadersNegotiatorFactory extends AbstractFactory
 {
     public function __invoke(ContainerInterface $container): HeadersNegotiator
     {
-        $config = $this->resolveConfig($container->get('config')['chubbyphp']['cors'] ?? []);
+        /** @var array{chubbyphp?: array{cors?: array<string, mixed>}} $config */
+        $config = $container->get('config');
 
-        return new HeadersNegotiator($config['allowHeaders'] ?? []);
+        /** @var array{allowHeaders?: array<string>} $corsConfig */
+        $corsConfig = $this->resolveConfig($config['chubbyphp']['cors'] ?? []);
+
+        $allowHeaders = $corsConfig['allowHeaders'] ?? [];
+
+        return new HeadersNegotiator($allowHeaders);
     }
 }

@@ -13,13 +13,20 @@ final class OriginNegotiatorFactory extends AbstractFactory
 {
     public function __invoke(ContainerInterface $container): OriginNegotiator
     {
-        $config = $this->resolveConfig($container->get('config')['chubbyphp']['cors'] ?? []);
+        /** @var array{chubbyphp?: array{cors?: array<string, mixed>}} $config */
+        $config = $container->get('config');
+
+        /** @var array{allowOrigins?: array<string, class-string<AllowOriginInterface>>} $corsConfig */
+        $corsConfig = $this->resolveConfig($config['chubbyphp']['cors'] ?? []);
 
         $allowOrigins = [];
-        foreach ($config['allowOrigins'] ?? [] as $allowOrigin => $class) {
-            /** @var AllowOriginInterface $allowOrigin */
-            $allowOrigin = new $class($allowOrigin);
-            $allowOrigins[] = $allowOrigin;
+
+        $allowOriginsConfig = $corsConfig['allowOrigins'] ?? [];
+
+        foreach ($allowOriginsConfig as $allowOrigin => $class) {
+            /** @var AllowOriginInterface $allowOriginInstance */
+            $allowOriginInstance = new $class($allowOrigin);
+            $allowOrigins[] = $allowOriginInstance;
         }
 
         return new OriginNegotiator($allowOrigins);
