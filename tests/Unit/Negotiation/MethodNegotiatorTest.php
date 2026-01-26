@@ -26,7 +26,9 @@ final class MethodNegotiatorTest extends TestCase
             new WithReturn('getHeaderLine', [MethodNegotiator::HEADER], ''),
         ]);
 
-        $negotiator = new MethodNegotiator(['GET', 'POST']);
+        // Include '' in allowMethods to ensure the early return is tested properly
+        // If the early return is removed, in_array('', ['GET', 'POST', ''], true) would return true
+        $negotiator = new MethodNegotiator(['GET', 'POST', '']);
 
         self::assertFalse($negotiator->negotiate($request));
     }

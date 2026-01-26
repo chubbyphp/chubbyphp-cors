@@ -28,9 +28,12 @@ final class OriginNegotiatorTest extends TestCase
             new WithReturn('getHeaderLine', [OriginNegotiator::HEADER], ''),
         ]);
 
+        // Include AllowOriginExact('') to ensure the early return is tested properly
+        // If the early return is removed, the foreach would match '' and return '' instead of null
         $negotiator = new OriginNegotiator([
             new AllowOriginExact('https://myproject.com'),
             new AllowOriginRegex('^https://otherproject\.'),
+            new AllowOriginExact(''),
         ]);
 
         self::assertNull($negotiator->negotiate($request));
